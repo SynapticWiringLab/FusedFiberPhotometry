@@ -1,11 +1,16 @@
 %% prepare workspace
 clear all; clc;  close all;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
 
+% add "FFP_code" into path 
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define data files
 
-path = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\';
+path = data_location + '\FFP_data\Figure_4\A\';
 
 % fused fiber coupler 
 photometry = '25417_FFC-2022-08-23-164333.ppd';
@@ -65,13 +70,13 @@ conversion_factor = 0.76;       % at 550nm; factor to convert V in (given by dor
 
 
 %% load data and calculate autofluorescence of FFC system
-AFiber = import_ppd([path, AFFile]);
+AFiber = import_ppd(path + AFFile);
 AFiber_1 = mean( AFiber.analog_1);
 AFiber_2 = mean( AFiber.analog_2);
 
 
 %% load and process photometry data
-d = import_ppd([path, photometry]);
+d = import_ppd(path + photometry);
 
 trig_idx   = find(d.digital_1(1:end-1) < 0.5 & d.digital_1(2:end) > 0.5)+1;     % find first and last trigger for data synchronization
 
