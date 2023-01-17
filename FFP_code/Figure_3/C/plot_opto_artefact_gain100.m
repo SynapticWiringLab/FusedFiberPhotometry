@@ -1,11 +1,15 @@
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+% add "FFP_code" into path 
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define  data files
-FP_file = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\C\ctrl_200uW-2021-05-10-115658.ppd';
-NI_file = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\C\VRdata_ctrl_100__20210510120059.mat';
-
+FP_file = data_location + '\FFP_data\Figure_3\C\ctrl_200uW-2021-05-10-115658.ppd';
+NI_file = data_location + '\FFP_data\Figure_3\C\VRdata_ctrl_100__20210510120059.mat';
 
 %% define variables
 SR_NI = 3000;           % sampling rate (national instruments board)
