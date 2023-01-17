@@ -1,10 +1,14 @@
 %% prepare workspace
 clear all; clc; close all;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
 
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define data files
-path = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S4\B\';
+path = data_location + '\FFP_data\Figure_S4\B\';
 
 pupil = 'video0121 14-01-26_ds_DLC_tracking.mat';
 photometry = '25417_FFC-2022-08-17-140130.ppd';
@@ -27,13 +31,13 @@ conversion_factor = 0.76;       % at 550nm; factor to convert V in (given by dor
 
 
 %% load data and calculate autofluorescence of FFC system
-AFiber = import_ppd([path, AFFile]);
+AFiber = import_ppd(path + AFFile);
 AFiber_1 = mean( AFiber.analog_1);
 AFiber_2 = mean( AFiber.analog_2);
 
 
 %% load and process photometry data
-d = import_ppd([path, photometry]);
+d = import_ppd(path + photometry);
 
 trig_idx   = find(d.digital_1(1:end-1) < 0.5 & d.digital_1(2:end) > 0.5)+1;     % find first and last trigger for data synchronization
 
@@ -57,12 +61,12 @@ d.dFoF = (d.analog_1_c-d.analog_2_c); % calculate delta F over F as the differen
 
 
 %% load and process pupil data
-pupildata = load([path, pupil]);
+pupildata = load(path + pupil);
 pupildata.d.pupil_diameter = movmedian(pupildata.d.pupil_diameter, 10);   % moving median filter data in order to reduce blinking artefacts
 pupil_diameter = re_sample(pupildata.d.pupil_diameter,d.sampling_rate,SR); % re-sample pupil data to match the sampling rate of photometry data
 
 %% load and process locomotion data
-NI_data = load([path NIfile]);
+NI_data = load(path + NIfile);
 
 NI_trig_idx   = find(NI_data.data.values(2, 1:end-1) < 3 & NI_data.data.values(2, 2:end) > 3)+1;            % find first and last trigger for data synchronization
 NI_trig_idx = [NI_trig_idx'; NI_trig_idx(end)+round(mean(diff(NI_trig_idx)))];                              % add one inter-trigger-interval (as the trigger defines only the onset of these intervals)

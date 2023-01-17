@@ -1,22 +1,27 @@
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% read in data files
 
-path = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_7\F';
+path = data_location + '\FFP_data\Figure_7\F';
 
-ex490 = readmatrix([path '\' '490ex.csv']);                 % spectrogram of excited alexa488
-ex490black = readmatrix([path '\' '490ex_black.csv']);      % spectrogram of autofluorescence when exciting at 490 nm
-alexa488 = readmatrix([path '\' 'Alexa488.txt']);           % spectral properties of alexa488 (from FPbase)
+ex490 = readmatrix(path+'\'+'490ex.csv');                 % spectrogram of excited alexa488
+ex490black = readmatrix(path+'\'+'490ex_black.csv');      % spectrogram of autofluorescence when exciting at 490 nm
+alexa488 = readmatrix(path+'\'+'Alexa488.txt');           % spectral properties of alexa488 (from FPbase)
 
-ex550 = readmatrix([path '\' '550ex.csv']);               	% spectrogram of excited alexa546
-ex550black = readmatrix([path '\' '550ex_black.csv']);     	% spectrogram of autofluorescence when exciting at 550 nm
-alexa546 = readmatrix([path '\' 'Alexa546.txt']);           % spectral properties of alexa546 (from FPbase)
+ex550 = readmatrix(path+'\'+'550ex.csv');               	% spectrogram of excited alexa546
+ex550black = readmatrix(path+'\'+'550ex_black.csv');     	% spectrogram of autofluorescence when exciting at 550 nm
+alexa546 = readmatrix(path+'\'+'Alexa546.txt');           % spectral properties of alexa546 (from FPbase)
 
-ex650 = readmatrix([path '\' '650ex.csv']);                 % spectrogram of excited alexa647
-ex650black = readmatrix([path '\' '650ex_black.csv']);      % spectrogram of autofluorescence when exciting at 650 nm
-alexa647 = readmatrix([path '\' 'Alexa647.txt']);           % spectral properties of alexa647 (from FPbase)
+ex650 = readmatrix(path+'\'+'650ex.csv');                 % spectrogram of excited alexa647
+ex650black = readmatrix(path+'\'+'650ex_black.csv');      % spectrogram of autofluorescence when exciting at 650 nm
+alexa647 = readmatrix(path+'\'+'Alexa647.txt');           % spectral properties of alexa647 (from FPbase)
     
 
 %% generate figure

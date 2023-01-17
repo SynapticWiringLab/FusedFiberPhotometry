@@ -1,62 +1,70 @@
 %% prepare workspace
 clear all;  clc; close all;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+
+% add "FFP_code" into path 
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
+
 
 %% define  data files - dataset 1: doric first, then FFC
 % Fused Fiber System
-FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_FFC-2022-08-12-142846.ppd';
-NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24517_FFC_20220812145012.mat';
-AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
+FP_file =   data_location + '\FFP_data\Figure_3\D-F\24517_FFC-2022-08-12-142846.ppd';
+NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24517_FFC_20220812145012.mat';
+AF =        data_location + '\FFP_data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_FFC-2022-08-12-145452.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24520_FFC_20220812151613.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\24520_FFC-2022-08-12-145452.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24520_FFC_20220812151613.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_FFC-2022-08-12-152109.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24521_FFC_20220812154238.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\24521_FFC-2022-08-12-152109.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24521_FFC_20220812154238.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd';
 
 % doric system
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_doric-2022-08-12-125729.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24517_doric_20220812131854.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_dAF-2022-08-12-131922.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\24517_doric-2022-08-12-125729.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24517_doric_20220812131854.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\24517_dAF-2022-08-12-131922.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_doric-2022-08-12-132204.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24520_doric_20220812134434.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_dAF-2022-08-12-134539.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\24520_doric-2022-08-12-132204.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24520_doric_20220812134434.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\24520_dAF-2022-08-12-134539.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_doric-2022-08-12-134832.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_24521_doric_20220812140952.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_dAF-2022-08-12-141032.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\24521_doric-2022-08-12-134832.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_24521_doric_20220812140952.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\24521_dAF-2022-08-12-141032.ppd';
 
 
 
 % define data files - dataset 2: FFC first, then doric
 % Fused Fiber System
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_FFC-2022-08-18-103713.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25417_FFC_opto_20220818105935.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25417_FFC-2022-08-18-103713.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25417_FFC_opto_20220818105935.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_FFC-2022-08-18-110558.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25420_FFC_opto_20220818112738.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25420_FFC-2022-08-18-110558.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25420_FFC_opto_20220818112738.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_FFC-2022-08-18-113249.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25421_FFC_opto_20220818115928.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25421_FFC-2022-08-18-113249.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25421_FFC_opto_20220818115928.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
 
 % doric system
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_doric-2022-08-18-133407.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25417_doric_opto_20220818135631.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_dAF-2022-08-18-132935.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25417_doric-2022-08-18-133407.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25417_doric_opto_20220818135631.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25417_dAF-2022-08-18-132935.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_doric-2022-08-18-140208.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25420_doric_opto_20220818142359.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_dAF-2022-08-18-135948.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25420_doric-2022-08-18-140208.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25420_doric_opto_20220818142359.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25420_dAF-2022-08-18-135948.ppd';
 
-% FP_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_doric-2022-08-18-142945.ppd';
-% NI_file =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\VRdata_25421_doric_opto_20220818145111.mat';
-% AF =        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_dAF-2022-08-18-142831.ppd';
+% FP_file =   data_location + '\FFP_data\Figure_3\D-F\25421_doric-2022-08-18-142945.ppd';
+% NI_file =   data_location + '\FFP_data\Figure_3\D-F\VRdata_25421_doric_opto_20220818145111.mat';
+% AF =        data_location + '\FFP_data\Figure_3\D-F\25421_dAF-2022-08-18-142831.ppd';
 
 
 

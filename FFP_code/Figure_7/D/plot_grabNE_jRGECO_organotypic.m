@@ -1,9 +1,15 @@
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
+
 
 %% define data files
-FP_file = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_7\D\slice3-2021-11-19-170052.ppd'; % 1 drop of bicuculline after 1:30 min, 1 drop of norepinephrine after 3:00 min
+FP_file = data_location + '\FFP_data\Figure_7\D\slice3-2021-11-19-170052.ppd'; % 1 drop of bicuculline after 1:30 min, 1 drop of norepinephrine after 3:00 min
 
 
 %% define variables
