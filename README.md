@@ -1,4 +1,4 @@
-# FusedFiberPhotometry
+# Fused Fiber Photometry
 
 ![Fused Fiber Photometry of Genetically Encoded Calcium Indicator in vivo](photometry_calcium_activity_405_470nm.png)
 
