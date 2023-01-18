@@ -1,3 +1,10 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 clear all; close all; clc;
 
 
@@ -20,7 +27,7 @@ end
 errorbar(1, mean(FFC_470), std(FFC_470), 'bo', 'LineWidth', 2, 'color', [51, 133, 255]./255)
 errorbar(2, mean(doric_470), std(doric_470), 'ko', 'LineWidth', 2)
 xlim([0.5 2.5]); ylim([0 0.5]); set(gca, 'XTick', [1, 2], 'XTickLabel', {'FFC', 'CPS'})
-ylabel('signal relative to stimulus onset (mV)')
+ylabel('signal relative to stimulus onset (V)')
 
 subplot(1, 3, 2); hold on;
 plot([0.8:0.4./(length(FFC_405)-1):1.2], -FFC_405, 'bo', 'color', [115, 0, 230]./255)
@@ -31,7 +38,7 @@ end
 errorbar(1, mean(-FFC_405), std(-FFC_405), 'bo', 'LineWidth', 2, 'color', [115, 0, 230]./255)
 errorbar(2, mean(-doric_405), std(-doric_405), 'ko', 'LineWidth', 2)
 xlim([0.5 2.5]); ylim([0 0.12]); set(gca, 'XTick', [1, 2], 'XTickLabel', {'FFC', 'CPS'})
-ylabel('signal relative to stimulus onset (-mV)')
+ylabel('signal relative to stimulus onset (-V)')
 
 
 subplot(1, 3, 3); hold on;

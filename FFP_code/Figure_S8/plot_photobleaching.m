@@ -1,11 +1,23 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define data files
-Intensities =       'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S8\bleaching_intensities.xlsx';
-pre_bleach_data =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S8\data_pre_bleach';
-post_bleach_data =  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S8\data_12h_bleach';
+Intensities =       data_location + '\FFP_data\Figure_S8\bleaching_intensities.xlsx';
+pre_bleach_data =   data_location + '\FFP_data\Figure_S8\data_pre_bleach';
+post_bleach_data =  data_location + '\FFP_data\Figure_S8\data_12h_bleach';
 
 
 %% define variables
@@ -29,7 +41,7 @@ for fileIdx = 1:length(pre_list)                                                
     cur_file = pre_list(fileIdx).name;                                                          % get the filename
     dummy = strsplit(cur_file, '-'); dummy = dummy{1}; dummy = strsplit(dummy, '_');            % get the excitation wavelength
     
-    data = import_ppd([pre_bleach_data '\' cur_file]);                                          % load data
+    data = import_ppd(pre_bleach_data+'\'+cur_file);                                          % load data
     mean_intensity = mean(data.analog_1(1: data.sampling_rate*t_window));                       % calculate average fiber autofluorescence
     
     if dummy{1} == '405'
@@ -59,7 +71,7 @@ for fileIdx = 1:length(post_list)                                               
     cur_file = post_list(fileIdx).name;                                                          % get the filename
     dummy = strsplit(cur_file, '-'); dummy = dummy{1}; dummy = strsplit(dummy, '_');            % get the excitation wavelength
     
-    data = import_ppd([post_bleach_data '\' cur_file]);                                          % load data
+    data = import_ppd(post_bleach_data+'\'+cur_file);                                          % load data
     mean_intensity = mean(data.analog_1(1: data.sampling_rate*t_window));                       % calculate average fiber autofluorescence
     
     if dummy{1} == '405'

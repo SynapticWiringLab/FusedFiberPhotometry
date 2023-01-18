@@ -1,61 +1,73 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 
 %% define data and load files (this data is taken from the recordings of system comparison, i.e. Figure 4a (spontaneous) and Figure 4b-f (which, in turn, is the data also underlying Figure 3D-F)
-AF_fiber = {        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25417_AFpre-2022-08-23-164219.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25420_AFpre-2022-08-23-154911.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25421_AFpre-2022-08-23-161606.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd'};
+AF_fiber = {        data_location + '\FFP_data\Figure_4\A\25417_AFpre-2022-08-23-164219.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25420_AFpre-2022-08-23-154911.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25421_AFpre-2022-08-23-161606.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd'};
                       
 excitation_power_AF = [243, 308, 245 275 327 278 190 310 250 ; 404 184 187 207 221 194 135 181 156 ];  % excitation power when recording autofluorescence (in µW)
 
 
 
-AF_implants = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\implants\doric_lowAF-2022-03-25-153030.ppd';
+AF_implants = data_location + '\FFP_data\Figure_5\D\implants\doric_lowAF-2022-03-25-153030.ppd';
 
-TL_path     = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\implants\thorlabs\';
-doric_path  = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\implants\doric_implants\';
-RWD_path    = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\implants\RWD_implants\';
+TL_path     = data_location + '\FFP_data\Figure_5\D\implants\thorlabs\';
+doric_path  = data_location + '\FFP_data\Figure_5\D\implants\doric_implants\';
+RWD_path    = data_location + '\FFP_data\Figure_5\D\implants\RWD_implants\';
 
 excitation_power_implants470 = 800;
 excitation_power_implants405  = 1000;
 
 
-AF_fiber_tissue =   'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\tissue\FFC_AF-2021-05-19-095757.ppd';
+AF_fiber_tissue =   data_location + '\FFP_data\Figure_5\D\tissue\FFC_AF-2021-05-19-095757.ppd';
 
-AF_livebrain = {    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\tissue\FFC_15232c-2021-05-19-102122.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\tissue\FFC_15436c-2021-05-19-102513.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_5\D\tissue\FFC_15242c-2021-05-19-102648.ppd'};
+AF_livebrain = {    data_location + '\FFP_data\Figure_5\D\tissue\FFC_15232c-2021-05-19-102122.ppd';
+                    data_location + '\FFP_data\Figure_5\D\tissue\FFC_15436c-2021-05-19-102513.ppd';
+                    data_location + '\FFP_data\Figure_5\D\tissue\FFC_15242c-2021-05-19-102648.ppd'};
                 
 excitation_power_tissue = 100;    % excitation power when recording tissue fluorescence (in µW)               
                 
                 
-GCaMP = {           'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25417_FFC-2022-08-23-164333.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25420_FFC-2022-08-23-155023.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25421_FFC-2022-08-23-161754.ppd';            
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_FFC-2022-08-18-103713.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_FFC-2022-08-18-110558.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_FFC-2022-08-18-113249.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_FFC-2022-08-12-142846.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_FFC-2022-08-12-145452.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_FFC-2022-08-12-152109.ppd';};
+GCaMP = {           data_location + '\FFP_data\Figure_4\A\25417_FFC-2022-08-23-164333.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25420_FFC-2022-08-23-155023.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25421_FFC-2022-08-23-161754.ppd';            
+                    data_location + '\FFP_data\Figure_3\D-F\25417_FFC-2022-08-18-103713.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25420_FFC-2022-08-18-110558.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25421_FFC-2022-08-18-113249.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24517_FFC-2022-08-12-142846.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24520_FFC-2022-08-12-145452.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24521_FFC-2022-08-12-152109.ppd';};
 
-AF_GCaMP = {        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25417_AFpre-2022-08-23-164219.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25420_AFpre-2022-08-23-154911.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_4\A\25421_AFpre-2022-08-23-161606.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
-                    'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd'};
+AF_GCaMP = {        data_location + '\FFP_data\Figure_4\A\25417_AFpre-2022-08-23-164219.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25420_AFpre-2022-08-23-154911.ppd';
+                    data_location + '\FFP_data\Figure_4\A\25421_AFpre-2022-08-23-161606.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25417_AF-2022-08-18-110106.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25420_AF-2022-08-18-112833.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\25421_AF-2022-08-18-120032.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24517_AF-2022-08-12-145308.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24520_AF-2022-08-12-151832.ppd';
+                    data_location + '\FFP_data\Figure_3\D-F\24521_AF-2022-08-12-155202.ppd'};
 
 excitation_power_GCaMP = [243, 308, 245 275 327 278 190 310 250 ; 404 184 187 207 221 194 135 181 156 ];  % excitation power when recording autofluorescence (in µW)
 
@@ -84,21 +96,21 @@ AF405_implants = median(data.analog_2(1: data.sampling_rate*t_window))./conversi
 
 TL_files = dir(fullfile(TL_path,'*.ppd'));
 for i_TL = 1:size(TL_files, 1)
-    data =  import_ppd([TL_path '\' TL_files(i_TL).name]);
+    data =  import_ppd(TL_path+'\'+TL_files(i_TL).name);
     AFTL(1, i_TL) = median(data.analog_1(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants470-AF470_implants;
     AFTL(2, i_TL) = median(data.analog_2(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants405-AF405_implants;
 end
 
 doric_files = dir(fullfile(doric_path,'*.ppd'));
 for i_doric = 1:size(doric_files, 1)
-    data =  import_ppd([doric_path '\' doric_files(i_doric).name]);
+    data =  import_ppd(doric_path+'\'+doric_files(i_doric).name);
     AFdoric(1, i_doric) = median(data.analog_1(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants470-AF470_implants;
     AFdoric(2, i_doric) = median(data.analog_2(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants405-AF405_implants;
 end
 
 RWD_files = dir(fullfile(RWD_path,'*.ppd'));
 for i_RWD = 1:size(RWD_files, 1)
-    data =  import_ppd([RWD_path '\' RWD_files(i_RWD).name]);
+    data =  import_ppd(RWD_path+'\'+RWD_files(i_RWD).name);
     AFRWD(1, i_RWD) = median(data.analog_1(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants470-AF470_implants;
     AFRWD(2, i_RWD) = median(data.analog_2(1:data.sampling_rate*t_window))./conversion_factor./excitation_power_implants405-AF405_implants;
 end

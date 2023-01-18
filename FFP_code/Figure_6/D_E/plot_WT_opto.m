@@ -1,22 +1,34 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define  data files (choose one of the three animals by (un)commenting)
-FP_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15242_wt-opto-2021-10-05-141540.ppd';
-                'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15242_wt-opto-2021-10-05-153628.ppd'};
-NI_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15242_wt-opto_20211005143510.mat';
-                'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15242_wt-opto_20211005155311.mat'};
+FP_files =   {  data_location + '\FFP_data\Figure_6\D_E\15242_wt-opto-2021-10-05-141540.ppd';
+                data_location + '\FFP_data\Figure_6\D_E\15242_wt-opto-2021-10-05-153628.ppd'};
+NI_files =   {  data_location + '\FFP_data\Figure_6\D_E\VRdata_15242_wt-opto_20211005143510.mat';
+                data_location + '\FFP_data\Figure_6\D_E\VRdata_15242_wt-opto_20211005155311.mat'};
             
-% FP_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15252_wt-opto-2021-10-05-145749.ppd';
-%                 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15252_wt-opto-2021-10-05-162440.ppd'};
-% NI_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15252_wt-opto_20211005151446.mat';
-%                 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15252_wt-opto_20211005164148.mat'};
+% FP_files =   {  data_location + '\FFP_data\Figure_6\D_E\15252_wt-opto-2021-10-05-145749.ppd';
+%                 data_location + '\FFP_data\Figure_6\D_E\15252_wt-opto-2021-10-05-162440.ppd'};
+% NI_files =   {  data_location + '\FFP_data\Figure_6\D_E\VRdata_15252_wt-opto_20211005151446.mat';
+%                 data_location + '\FFP_data\Figure_6\D_E\VRdata_15252_wt-opto_20211005164148.mat'};
 
-% FP_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15436_wt-opto-2021-10-05-143739.ppd';
-%                 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\15436_wt-opto-2021-10-05-160550.ppd'};
-% NI_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15436_wt-opto_20211005145523.mat';
-%                 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_15436_wt-opto_20211005162237.mat'};
+% FP_files =   {  data_location + '\FFP_data\Figure_6\D_E\15436_wt-opto-2021-10-05-143739.ppd';
+%                 data_location + '\FFP_data\Figure_6\D_E\15436_wt-opto-2021-10-05-160550.ppd'};
+% NI_files =   {  data_location + '\FFP_data\Figure_6\D_E\VRdata_15436_wt-opto_20211005145523.mat';
+%                 data_location + '\FFP_data\Figure_6\D_E\VRdata_15436_wt-opto_20211005162237.mat'};
 
 
 

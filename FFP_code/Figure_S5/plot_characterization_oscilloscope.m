@@ -1,12 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear all; %close all; clc;
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 R_non_modif = 4.7
 R_0R47 = 0.47*4.7/(0.47+4.7) % overall resistance when extra 0.47 resistor is added 
 
-trace_no_modif = "G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\oscilloscope\no_modifications_setting100mA_01.csv"
-trace_0R47 = "G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\oscilloscope\0R47_setting100mA_10.csv"
-trace_0R47_6800uF = "G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\oscilloscope\0R47_6800uF_setting100mA_01.csv"
+trace_no_modif = data_location + '\FFP_data\Figure_S5\oscilloscope\no_modifications_setting100mA_01.csv'
+trace_0R47 = data_location + '\FFP_data\Figure_S5\oscilloscope\0R47_setting100mA_10.csv'
+trace_0R47_6800uF = data_location + '\FFP_data\Figure_S5\oscilloscope\0R47_6800uF_setting100mA_01.csv'
  
 data_trace_no_modif = readtable(trace_no_modif)
 data_trace_0R47 = readtable(trace_0R47)
@@ -31,7 +43,7 @@ figure('color', [1 1 1]);
     legend('pyPhotometry (no modifications)', 'pyPhotometry(0R47)','pyPhotometry(0R47+6800uF)', 'thorlabs (max)');
     hold off;
 
-pyPhotometry_modifications = "G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\oscilloscope\data_comparison.csv"
+pyPhotometry_modifications = data_location + '\FFP_data\Figure_S5\oscilloscope\data_comparison.csv'
 
 data = readtable(pyPhotometry_modifications)
 
@@ -54,27 +66,27 @@ data.x0R47And6800uF_mA_=data.x0R47And6800uF_mV_/R_0R47
    
 %% load fiber autofluorescence as a reference signal, noise measurements 
 
-FFC_thorlabs = {'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_1-2022-10-20-160202.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_2-2022-10-20-160243.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_3-2022-10-20-160308.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_4-2022-10-20-160331.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_5-2022-10-20-160358.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_7-2022-10-20-160450.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_8-2022-10-20-160514.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_9-2022-10-20-160542.ppd';
-      'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_throlabs_AF\AF_10-2022-10-20-160608.ppd';
+FFC_thorlabs = {data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_1-2022-10-20-160202.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_2-2022-10-20-160243.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_3-2022-10-20-160308.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_4-2022-10-20-160331.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_5-2022-10-20-160358.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_7-2022-10-20-160450.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_8-2022-10-20-160514.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_9-2022-10-20-160542.ppd';
+      data_location + '\FFP_data\Figure_S5\final_throlabs_AF\AF_10-2022-10-20-160608.ppd';
         };
      
- FFC_pyboard_0R47_6800uF = {'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_10-2022-10-20-144519.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_20-2022-10-20-144542.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_30-2022-10-20-144612.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_40-2022-10-20-144634.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_50-2022-10-20-144658.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_60-2022-10-20-144723.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_70-2022-10-20-144748.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_80-2022-10-20-144812.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_90-2022-10-20-144838.ppd';
-        'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S5\final_0R47_6800uF_resolution\AF_100-2022-10-20-144900.ppd';
+ FFC_pyboard_0R47_6800uF = {data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_10-2022-10-20-144519.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_20-2022-10-20-144542.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_30-2022-10-20-144612.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_40-2022-10-20-144634.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_50-2022-10-20-144658.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_60-2022-10-20-144723.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_70-2022-10-20-144748.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_80-2022-10-20-144812.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_90-2022-10-20-144838.ppd';
+        data_location + '\FFP_data\Figure_S5\final_0R47_6800uF_resolution\AF_100-2022-10-20-144900.ppd';
          };
      
 

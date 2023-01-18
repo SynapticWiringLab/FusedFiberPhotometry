@@ -1,10 +1,22 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 
 %% define data files
-path = 'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\D\';
+path =data_location + '\FFP_data\Figure_S6\D\';
 
 pupil = 'video0090 13-02-15_ds_DLC_tracking.mat';
 photometry = 'DAT12_r-2021-07-06-130217.ppd';
@@ -27,12 +39,12 @@ power_FFC1 = 660;            % in µW; excitation power for first channel (650 nm
 
 
 %% load data and calculate autofluorescence of FFC system
-AFiber = import_ppd([path, AFFile]);
+AFiber = import_ppd(path + AFFile);
 AFiber_1 = mean( AFiber.analog_1);
 
 
 %% load and process photometry data
-d = import_ppd([path, photometry]);
+d = import_ppd(path + photometry);
 
 trig_idx   = find(d.digital_1(1:end-1) < 0.5 & d.digital_1(2:end) > 0.5)+1;     % find first and last trigger for data synchronization
 trig_idx = [trig_idx; trig_idx(end)+round(mean(diff(trig_idx)))];               % add one inter-trigger-interval (as the trigger defines only the onset of these intervals)
@@ -46,7 +58,7 @@ d.dFoF = (d.d1_f-F0)./F0;                                   % calculate delta F 
 
 
 %% load and process pupil data
-pupildata = load([path, pupil]);
+pupildata = load(path + pupil);
 pupildata.d.pupil_diameter = movmedian(pupildata.d.pupil_diameter, 10);   % moving median filter data in order to reduce blinking artefacts
 pupil_diameter = resample(pupildata.d.pupil_diameter,d.sampling_rate,SR); % re-sample pupil data to match the sampling rate of photometry data
 pupil_diameter = lowpass(pupil_diameter,lp_cutoff,d.sampling_rate);       % low-pass filter pupil data  
@@ -54,7 +66,7 @@ pupil_diameter = lowpass(pupil_diameter,lp_cutoff,d.sampling_rate);       % low-
 
 
 %% load and process locomotion data
-NI_data = load([path NIfile]);
+NI_data = load(path + NIfile);
 
 NI_trig_idx   = find(NI_data.data.values(2, 1:end-1) < 3 & NI_data.data.values(2, 2:end) > 3)+1;    % find first and last trigger for data synchronization
 NI_trig_idx = [NI_trig_idx'; NI_trig_idx(end)+round(mean(diff(NI_trig_idx)))];                      % add one inter-trigger-interval (as the trigger defines only the onset of these intervals)

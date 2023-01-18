@@ -1,13 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; close all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define  data files
-FP_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\DAT92_NIRGeco_only_2021-10-05-151721.ppd';
-                'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\DAT92_NIRGeco_only_2021-10-06-164433.ppd'};
+FP_files =   {  data_location + '\FFP_data\Figure_6\D_E\DAT92_NIRGeco_only_2021-10-05-151721.ppd';
+                data_location + '\FFP_data\Figure_6\D_E\DAT92_NIRGeco_only_2021-10-06-164433.ppd'};
 
-NI_files =   {  'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_DAT92_NIRGeco_only_20211005153423.mat';
-                'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_6\D_E\VRdata_DAT92_NIRGeco_only_20211006170126.mat'};
+NI_files =   {  data_location + '\FFP_data\Figure_6\D_E\VRdata_DAT92_NIRGeco_only_20211005153423.mat';
+                data_location + '\FFP_data\Figure_6\D_E\VRdata_DAT92_NIRGeco_only_20211006170126.mat'};
 
 
 %% define variables

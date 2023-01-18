@@ -1,19 +1,31 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% A flexible and versatile system for multi-color fiber photometry and optogenetic manipulation
+% Andrey Formozov, Alexander Dieter, J. Simon Wiegert
+% code: Dieter, A, 2022 
+% reviewed: Formozov, A, 2023
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %% prepare workspace
 clear all; clc;
-addpath('G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\code')
+
+filePath = matlab.desktop.editor.getActiveFilename; % file path to the current script
+location = regexp(filePath,'FFP_code','split'); % "location of the "FFP_code" folder"
+addpath(location{1}+"FFP_code\");
+% or add "FFP_code" into path manually by uncommenting and specifying the path:
+% addpath('path_to_scripts\FFP_code')
 
 %% define data files
-WT_NIRFilt =        {'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\15242_NIR-2021-10-05-141540.ppd';    % WT animals, implanted and recorded with 6505 nm at 433 µW
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\15252_NIR-2021-10-05-145749.ppd';
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\15436_NIR-2021-10-05-143739.ppd'};
+WT_NIRFilt =        {data_location + '\FFP_data\Figure_S6\B_C\15242_NIR-2021-10-05-141540.ppd';    % WT animals, implanted and recorded with 6505 nm at 433 µW
+                     data_location + '\FFP_data\Figure_S6\B_C\15252_NIR-2021-10-05-145749.ppd';
+                     data_location + '\FFP_data\Figure_S6\B_C\15436_NIR-2021-10-05-143739.ppd'};
 
-NIRGeco_session1 =   {'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT92-2021-10-05-151721.ppd';        % NIR-GECO2-animals, implanted and recorded with 650 nm at 433 µW
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT93-2021-10-05-164351.ppd'};
+NIRGeco_session1 =   {data_location + '\FFP_data\Figure_S6\B_C\DAT92-2021-10-05-151721.ppd';        % NIR-GECO2-animals, implanted and recorded with 650 nm at 433 µW
+                     data_location + '\FFP_data\Figure_S6\B_C\DAT93-2021-10-05-164351.ppd'};
 
-NIRGeco_session2 =  {'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT11_l-2021-07-06-142159.ppd';       % NIR-GECO2-animals, implanted and recorded with 650 nm at 660 µW
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT11_r-2021-07-06-132722.ppd';
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT12_l-2021-07-06-135546.ppd';
-                     'G:\Alex\manuscripts\FusedFiberPhotometry_CellMethRep\02_final_submission\data\Figure_S6\B_C\DAT12_r-2021-07-06-130217.ppd'}; 
+NIRGeco_session2 =  {data_location + '\FFP_data\Figure_S6\B_C\DAT11_l-2021-07-06-142159.ppd';       % NIR-GECO2-animals, implanted and recorded with 650 nm at 660 µW
+                     data_location + '\FFP_data\Figure_S6\B_C\DAT11_r-2021-07-06-132722.ppd';
+                     data_location + '\FFP_data\Figure_S6\B_C\DAT12_l-2021-07-06-135546.ppd';
+                     data_location + '\FFP_data\Figure_S6\B_C\DAT12_r-2021-07-06-130217.ppd'}; 
      
      
      
